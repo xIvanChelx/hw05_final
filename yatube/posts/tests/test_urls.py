@@ -87,8 +87,7 @@ class PostsUrlTest(TestCase):
             f'/posts/{PostsUrlTest.post.id}/': 'posts/post_detail.html',
             f'/posts/{PostsUrlTest.post.id}/edit/': 'posts/create_post.html',
             '/create/': 'posts/create_post.html',
-            '/unexisting_page/': 'core/404.html',
-            }
+            '/unexisting_page/': 'core/404.html'}
         for adress, template in url_templates_names.items():
             with self.subTest(adress=adress):
                 response = self.authorized_client.get(adress)
