@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
+from http import HTTPStatus
 
 from ..models import Group, Post
 
@@ -46,7 +47,9 @@ class PostsViewsTest(TestCase):
             reverse('posts:post_edit',
                     kwargs={'post_id': self.post.id}
                     ): 'posts/create_post.html',
-            reverse('posts:post_create'): 'posts/create_post.html'}
+            reverse('posts:post_create'): 'posts/create_post.html',
+            reverse('about:author'): 'about/author.html',
+            reverse('about:tech'): 'about/tech.html'}
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
                 response = self.authorized_client.get(reverse_name)
@@ -210,3 +213,9 @@ class PostsViewsGroupListTest(TestCase):
             reverse('posts:group_list', kwargs={'slug': self.group_2.slug}))
         self.assertNotEqual(response.context.get('post').group,
                             self.post.group)
+
+    def test_404_view(self):
+        """Тест на отработку 404"""
+
+        response = self.authorized_client.get('/unexisting_page/')
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)

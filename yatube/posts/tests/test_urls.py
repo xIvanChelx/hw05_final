@@ -55,7 +55,9 @@ class PostsUrlTest(TestCase):
                  f'/posts/{PostsUrlTest.post.id}/': HTTPStatus.OK,
                  f'/posts/{PostsUrlTest.post.id}/edit/': HTTPStatus.FOUND,
                  '/create/': HTTPStatus.FOUND,
-                 '/unexisting_page/': HTTPStatus.NOT_FOUND
+                 '/unexisting_page/': HTTPStatus.NOT_FOUND,
+                 '/about/author/': HTTPStatus.OK,
+                 '/about/tech/': HTTPStatus.OK
                  }
         for adress, response_code in pages.items():
             with self.subTest(adress=adress):
@@ -87,7 +89,9 @@ class PostsUrlTest(TestCase):
             f'/posts/{PostsUrlTest.post.id}/': 'posts/post_detail.html',
             f'/posts/{PostsUrlTest.post.id}/edit/': 'posts/create_post.html',
             '/create/': 'posts/create_post.html',
-            '/unexisting_page/': 'core/404.html'}
+            '/unexisting_page/': 'core/404.html',
+            '/about/author/': 'about/author.html',
+            '/about/tech/': 'about/tech.html'}
         for adress, template in url_templates_names.items():
             with self.subTest(adress=adress):
                 response = self.authorized_client.get(adress)
